@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>登錄成功頁面</title>
+    <style>
+      table,
+      tr,
+      td {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>更新成功。</h1>
+    <p>以下為更新後學生資料：</p>
+    <table>
+      <tr>
+        <td>學生ID</td>
+        <td><%= newData._id %></td>
+      </tr>
+      <tr>
+        <td>學生姓名</td>
+        <td><%= newData.name %></td>
+      </tr>
+      <tr>
+        <td>學生年齡</td>
+        <td><%= newData.age %></td>
+      </tr>
+      <tr>
+        <td>merit 獎學金</td>
+        <td><%= newData.scholarship.merit %></td>
+      </tr>
+      <tr>
+        <td>other 獎學金</td>
+        <td><%= newData.scholarship.other %></td>
+      </tr>
+    </table>
+    <a href="/students">回到首頁</a>
+  </body>
+</html>

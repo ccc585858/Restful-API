@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>確認刪除頁面</title>
+  </head>
+  <body>
+    <form
+      action="/students/<%= foundStudent._id %>?_method=DELETE"
+      method="POST"
+    >
+      <table>
+        <tr>
+          <td>學生ID</td>
+          <td><%= foundStudent._id %></td>
+        </tr>
+        <tr>
+          <td>學生姓名</td>
+          <td><%= foundStudent.name %></td>
+        </tr>
+        <tr>
+          <td>學生年齡</td>
+          <td><%= foundStudent.age %></td>
+        </tr>
+        <tr>
+          <td>merit 獎學金</td>
+          <td><%= foundStudent.scholarship.merit %></td>
+        </tr>
+        <tr>
+          <td>other 獎學金</td>
+          <td><%= foundStudent.scholarship.other %></td>
+        </tr>
+      </table>
+      <button>刪除資料</button>
+    </form>
+  </body>
+</html>
