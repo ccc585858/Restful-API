@@ -18,13 +18,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 
-app.get("/students", async (req, res) => {
+app.get("/students", async (req, res, next) => {
   try {
     let studentData = await Student.find({}).exec();
     // return res.send(studentData);
     return res.render("students", { studentData });
   } catch (e) {
-    return res.status(500).send("尋找資料時發生錯誤...");
+    // return res.status(500).send("尋找資料時發生錯誤...");
+    next(e); // 將 error message 往下傳到最後面的 middleware
   }
 });
 
@@ -32,7 +33,7 @@ app.get("/students/new", (req, res) => {
   return res.render("new-student-form");
 });
 
-app.get("/students/:_id", async (req, res) => {
+app.get("/students/:_id", async (req, res, next) => {
   let { _id } = req.params;
   try {
     let foundStudent = await Student.findOne({ _id }).exec();
@@ -43,13 +44,14 @@ app.get("/students/:_id", async (req, res) => {
     }
     // return res.send(foundStudent);
   } catch (e) {
-    console.log(e);
-    return res.status(400).render("student-not-found");
+    // console.log(e);
+    // return res.status(400).render("student-not-found");
+    next(e);
   }
 });
 
 // 編輯學生資料頁面
-app.get("/students/:_id/edit", async (req, res) => {
+app.get("/students/:_id/edit", async (req, res, next) => {
   let { _id } = req.params;
   try {
     let foundStudent = await Student.findOne({ _id }).exec();
@@ -60,13 +62,14 @@ app.get("/students/:_id/edit", async (req, res) => {
     }
     // return res.send(foundStudent);
   } catch (e) {
-    console.log(e);
-    return res.status(400).render("student-not-found");
+    // console.log(e);
+    // return res.status(400).render("student-not-found");
+    next(e);
   }
 });
 
 // 刪除學生資料頁面
-app.get("/students/:_id/delete", async (req, res) => {
+app.get("/students/:_id/delete", async (req, res, next) => {
   let { _id } = req.params;
   try {
     let foundStudent = await Student.findOne({ _id }).exec();
@@ -77,8 +80,9 @@ app.get("/students/:_id/delete", async (req, res) => {
     }
     // return res.send(foundStudent);
   } catch (e) {
-    console.log(e);
-    return res.status(400).render("student-not-found");
+    // console.log(e);
+    // return res.status(400).render("student-not-found");
+    next(e);
   }
 });
 
@@ -165,6 +169,12 @@ app.delete("/students/:_id", async (req, res) => {
     console.log(e);
     return res.status(500).render("student-delete-fail");
   }
+});
+
+// error message 會傳到這個 middleware
+app.use((err, req, res, next) => {
+  console.log("正在使用這個 middleware");
+  return res.status(400).render("error");
 });
 
 app.listen(3000, () => {
